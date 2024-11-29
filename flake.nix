@@ -6,7 +6,7 @@
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       crossPkgs = (
-        pkgs {
+        import pkgs {
           # uses GCC and newlib
           crossSystem = {
             system = "riscv64-none-elf";
