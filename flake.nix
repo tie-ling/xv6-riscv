@@ -6,7 +6,8 @@
     let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
       crossPkgs = (
-        import pkgs {
+        import nixpkgs {
+          localSystem = "x86_64-linux";
           # uses GCC and newlib
           crossSystem = {
             system = "riscv64-none-elf";
@@ -16,12 +17,8 @@
     in
     {
       formatter.x86_64-linux = pkgs.nixfmt-rfc-style;
-      devShell.x86_64-linux = pkgs.mkShell {
-        nativeBuildInputs = with pkgs; [
-          qemu_full
-          gnumake
-          crossPkgs.gcc
-        ];
+      devShell.x86_64-linux = crossPkgs.mkShell {
+        nativeBuildInputs = with pkgs; [ gnumake qemu_full ];
       };
     };
 }
